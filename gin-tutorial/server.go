@@ -1,11 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"io"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rssarto/gin-tutorial/controller"
+	"github.com/rssarto/gin-tutorial/middlewares"
 	"github.com/rssarto/gin-tutorial/service"
+	gindum "github.com/tpkeeper/gin-dump"
 )
 
 var (
@@ -13,16 +16,16 @@ var (
 	videoController controller.VideoController = controller.New(videoService)
 )
 
+func setupLogOutput() {
+	f, _ := os.Create("gin.log")
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+}
+
 func main() {
-	firstNumber := 5
-	var secondNumber *int = &firstNumber
-	thirdNumber := firstNumber
-	fmt.Printf("firstNumber = %d, secondNumber = %d, thirdNumber = %d\n", firstNumber, *secondNumber, thirdNumber)
+	setupLogOutput()
 
-	firstNumber = 10
-	fmt.Printf("firstNumber = %d, secondNumber = %d, thirdNumber = %d\n", firstNumber, *secondNumber, thirdNumber)
-
-	server := gin.Default()
+	server := gin.New()
+	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.BasicAuth(), gindum.Dump())
 
 	server.GET("/videos", func(ctx *gin.Context) {
 		ctx.JSON(200, videoController.FindAll())
