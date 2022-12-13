@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func main() {
+func main_main() {
 
 	url := "http://localhost:8080/videos"
 	method := "POST"
