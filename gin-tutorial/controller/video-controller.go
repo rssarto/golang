@@ -2,18 +2,19 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/rssarto/gin-tutorial/entity"
 	"github.com/rssarto/gin-tutorial/service"
-	"github.com/rssarto/gin-tutorial/validators"
 )
 
 type VideoController interface {
 	Save(ctx *gin.Context) error
 	FindAll() []entity.Video
 	ShowAll(ctx *gin.Context)
+	Update(ctx *gin.Context) error
+	Delete(ctx *gin.Context) error
 }
 
 type videoController struct {
@@ -27,7 +28,7 @@ func (videoController *videoController) Save(ctx *gin.Context) error {
 		return err
 	}
 
-	err = validate.Struct(video)
+	// err = validate.Struct(video)
 	if err != nil {
 		return err
 	}
@@ -53,11 +54,44 @@ func (videoController *videoController) ShowAll(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "index.html", data)
 }
 
-var validate *validator.Validate
+func (videoController *videoController) Update(ctx *gin.Context) error {
+	var video entity.Video
+	err := ctx.ShouldBindJSON(&video)
+	if err != nil {
+		return err
+	}
+
+	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
+	if err != nil {
+		return err
+	}
+
+	video.ID = id
+	// err = validate.Struct(video)
+	if err != nil {
+		return err
+	}
+	videoController.service.Update(video)
+	return nil
+}
+
+func (videoController *videoController) Delete(ctx *gin.Context) error {
+	var video entity.Video
+	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
+	if err != nil {
+		return err
+	}
+
+	video.ID = id
+	videoController.service.Delete(video)
+	return nil
+}
+
+// var validate *validator.Validate
 
 func New(service service.VideoService) VideoController {
-	validate = validator.New()
-	validate.RegisterValidation("is-cool", validators.ValidateCoolTitle)
+	// validate = validator.New()
+	// validate.RegisterValidation("is-cool", validators.ValidateCoolTitle)
 	return &videoController{
 		service: service,
 	}

@@ -8,12 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rssarto/gin-tutorial/controller"
 	"github.com/rssarto/gin-tutorial/middlewares"
+	"github.com/rssarto/gin-tutorial/repository"
 	"github.com/rssarto/gin-tutorial/service"
 	gindum "github.com/tpkeeper/gin-dump"
 )
 
 var (
-	videoService    service.VideoService       = service.New()
+	videoRepository repository.VideoRepository = repository.NewVideoRepository()
+	videoService    service.VideoService       = service.New(videoRepository)
 	loginService    service.LoginService       = service.NewLoginService()
 	jwtService      service.JWTService         = service.NewJwtService()
 	videoController controller.VideoController = controller.New(videoService)
@@ -55,6 +57,32 @@ func main() {
 
 		apiRoutes.POST("/videos", func(ctx *gin.Context) {
 			err := videoController.Save(ctx)
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{
+					"message": "Video input is Valid!!",
+				})
+			}
+		})
+
+		apiRoutes.PUT("/videos/:id", func(ctx *gin.Context) {
+			err := videoController.Update(ctx)
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{
+					"message": "Video input is Valid!!",
+				})
+			}
+		})
+
+		apiRoutes.DELETE("/videos/:id", func(ctx *gin.Context) {
+			err := videoController.Delete(ctx)
 			if err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{
 					"error": err.Error(),
