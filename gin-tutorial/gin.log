@@ -10,13 +10,26 @@
 	- header.html
 	- index.html
 
-[GIN-debug] POST   /login                    --> main.main.func1 (4 handlers)
-[GIN-debug] GET    /api/videos               --> main.main.func2 (5 handlers)
-[GIN-debug] POST   /api/videos               --> main.main.func3 (5 handlers)
-[GIN-debug] PUT    /api/videos/:id           --> main.main.func4 (5 handlers)
-[GIN-debug] DELETE /api/videos/:id           --> main.main.func5 (5 handlers)
-[GIN-debug] GET    /view/videos              --> main.main.func6 (4 handlers)
+[GIN-debug] POST   /api/login                --> github.com/rssarto/gin-tutorial/api.Authenticate (4 handlers)
+[GIN-debug] GET    /api/videos               --> github.com/rssarto/gin-tutorial/api.GetVideos (5 handlers)
+[GIN-debug] POST   /api/videos               --> github.com/rssarto/gin-tutorial/api.CreateVideo (5 handlers)
+[GIN-debug] PUT    /api/videos/:id           --> github.com/rssarto/gin-tutorial/api.UpdateVideo (5 handlers)
+[GIN-debug] DELETE /api/videos/:id           --> github.com/rssarto/gin-tutorial/api.DeleteVideo (5 handlers)
+[GIN-debug] GET    /view/videos              --> github.com/rssarto/gin-tutorial/api.ViewVideos (4 handlers)
+[GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (4 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
-::1 - [17 Dec 22 20:35 -03] GET /api/videos 200 620.452µs 
+::1 - [21 Dec 22 08:28 -03] GET /swagger/index.html 200 458.068µs 
+::1 - [21 Dec 22 08:28 -03] GET /swagger/swagger-ui.css 200 1.283549ms 
+::1 - [21 Dec 22 08:28 -03] GET /swagger/swagger-ui-bundle.js 200 3.391601ms 
+::1 - [21 Dec 22 08:28 -03] GET /swagger/swagger-ui-standalone-preset.js 200 3.978883ms 
+::1 - [21 Dec 22 08:28 -03] GET /swagger/doc.json 200 1.024149ms 
+::1 - [21 Dec 22 08:28 -03] GET /swagger/favicon-32x32.png 200 140.329µs 
+::1 - [21 Dec 22 08:29 -03] POST /api/login 200 305.06µs 
+::1 - [21 Dec 22 08:32 -03] GET /api/videos 200 1.579716ms 
+::1 - [21 Dec 22 08:33 -03] GET /api/videos 200 689.44µs 
+::1 - [21 Dec 22 08:33 -03] POST /api/videos 200 160.374427ms 
+::1 - [21 Dec 22 08:33 -03] GET /api/videos 200 835.861µs 
+::1 - [21 Dec 22 08:34 -03] PUT /api/videos/5 200 85.507578ms 
+::1 - [21 Dec 22 08:34 -03] GET /api/videos 200 741.176µs 
